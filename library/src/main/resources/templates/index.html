@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>書籍列表</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Exo', sans-serif;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        h1 {
+            font-size: 4em; /* 調整字體大小 */
+            font-weight: 800; /* 調整字體粗細 */
+            color: #fff5e9; /* 文字顏色 */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 文字陰影 */
+        }
+
+        button {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-book-button {
+            background-color: #007bff;
+        }
+
+        .add-book-button:hover {
+            background-color: #0056b3;
+        }
+
+        .logout-button {
+            background-color: #b5b5b5;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+
+        .logout-button:hover {
+            background-color: #b30000;
+        }
+
+        .borrow-button {
+            background-color: #007bff;
+        }
+
+        .borrow-button:hover {
+            background-color: #0056b3;
+        }
+
+        .return-button {
+            background-color: #28a745;
+        }
+
+        .return-button:hover {
+            background-color: #218838;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #218838;
+        }
+
+        /* 新增的部分 */
+        .area {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* 設置 z-index 為 -1，將其置於所有其他元素的下方 */
+            background: #f1be82;
+            background: -webkit-linear-gradient(to left, #fbaf8f, #f1c68b);
+        }
+
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            animation: animate 25s linear infinite;
+            bottom: -150px;
+        }
+
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+                border-radius: 0;
+            }
+
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+        /* 結束新增的部分 */
+    </style>
+</head>
+<body>
+<div class="area">
+    <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+
+<h1>書籍列表</h1>
+
+
+<div class="search-bar">
+    <input type="text" id="searchTitle" placeholder="輸入書名查找">
+    <button onclick="searchBooks()">查找</button>
+</div>
+<button class="logout-button" onclick="window.location.href='/logout'">登出</button>
+<button class="add-book-button" onclick="redirectToAddBook()">新增書籍</button>
+<button onclick="window.location.href='/index'">顯示所有書籍</button>
+
+<table>
+    <thead>
+    <tr>
+        <th>書名</th>
+        <th>作者</th>
+        <th>是否可借</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody id="bookList">
+    <!-- 書籍列表將會動態添加到這裡 -->
+    </tbody>
+</table>
+
+<script>
+    // 在頁面加載完成後向後端發送請求獲取書籍列表
+    window.onload = async function() {
+        const response = await fetch('/books');
+        const books = await response.json();
+        displayBooks(books);
+    };
+
+    // 顯示書籍列表
+    function displayBooks(books) {
+        const bookListTbody = document.getElementById('bookList');
+        bookListTbody.innerHTML = '';
+        books.forEach(book => {
+            const row = `
+                    <tr>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.available ? '是' : '否'} ${book.note ? `(借書人: ${book.note})` : ''}</td>
+                        <td>
+                            <button class="borrow-button" onclick="borrowBook(${book.id})" ${!book.available ? 'disabled' : ''}>借書</button>
+                            <button class="return-button" onclick="returnBook(${book.id})" ${book.available ? 'disabled' : ''}>還書</button>
+                            <button class="delete-button" onclick="deleteBook(${book.id})">刪除</button>
+                        </td>
+                    </tr>
+                `;
+            bookListTbody.insertAdjacentHTML('beforeend', row);
+        });
+    }
+
+    // 查找書籍
+    async function searchBooks() {
+        const title = document.getElementById('searchTitle').value;
+        const response = await fetch(`/books/search?title=${encodeURIComponent(title)}`);
+        const books = await response.json();
+        displayBooks(books);
+    }
+
+    // 借書
+    async function borrowBook(bookId) {
+        const note = prompt('請輸入借書人姓名:');
+        if (note !== null && note.trim() !== '') {
+            const response = await fetch(`/books/borrow/${bookId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(note.trim())
+            });
+            if (response.ok) {
+                alert('書籍已成功借出！');
+                // 更新書籍列表
+                const updatedResponse = await fetch('/books');
+                const updatedBooks = await updatedResponse.json();
+                displayBooks(updatedBooks);
+            } else {
+                alert('借書時發生錯誤！');
+            }
+        } else {
+            alert('借書人姓名不能為空！');
+        }
+    }
+
+    // 還書
+    async function returnBook(bookId) {
+        const response = await fetch(`/books/return/${bookId}`, { method: 'POST' });
+        if (response.ok) {
+            alert('書籍已成功歸還！');
+            // 更新書籍列表
+            const updatedResponse = await fetch('/books');
+            const updatedBooks = await updatedResponse.json();
+            displayBooks(updatedBooks);
+        } else {
+            alert('歸還書籍時發生錯誤！');
+        }
+    }
+
+    // 刪除書籍
+    async function deleteBook(bookId) {
+        const response = await fetch(`/books/${bookId}`, {
+            method: 'DELETE',
+        });
+        if (response.ok) {
+            alert('書籍已成功刪除！');
+            // 更新書籍列表
+            const updatedResponse = await fetch('/books');
+            const updatedBooks = await updatedResponse.json();
+            displayBooks(updatedBooks);
+        } else {
+            alert('刪除書籍時發生錯誤！');
+        }
+    }
+
+    // 導向新增書籍頁面
+    function redirectToAddBook() {
+        window.location.href = '/add_book';
+    }
+</script>
+</body>
+</html>
